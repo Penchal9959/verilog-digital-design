@@ -1,5 +1,36 @@
 `timescale 1ns / 1ps
 
+// Non-overlapping sequence detector for the bit pattern 1100111.
+//
+// Seven states track how much of the target has matched so far. On a mismatch
+// the machine falls back to the state matching the longest suffix of what it
+// has seen that is still a prefix of the target - that is the part worth
+// studying, since going straight back to s0 every time would miss overlapping
+// starts.
+//
+//   state  matched   on 1   on 0
+//   s0     -         s1     s0
+//   s1     1         s2     s0
+//   s2     11        s2     s3
+//   s3     110       s1     s4     <- 1101 leaves a useful "1", so s1 not s0
+//   s4     1100      s5     s0
+//   s5     11001     s6     s0
+//   s6     110011    s0 + out=1    s0
+//
+// Non-overlapping means a hit returns to s0 rather than reusing the tail of
+// the match, which is why s6 goes to s0 on a 1 rather than to s1.
+//
+// The coding style is not what you would write today. State, next state and
+// output are all assigned with blocking (=) assignments inside one clocked
+// block. The conventional structure is three separate blocks - a clocked state
+// register using <=, combinational next-state logic, and a separate output
+// block - which avoids the simulation/synthesis mismatches this style invites.
+//
+// One consequence to be aware of: `out` is assigned inside the clocked block,
+// so it is registered. That gives this "Mealy" machine Moore-like timing, and
+// it means a testbench sampling `out` on posedge races the DUT and reads the
+// previous value. The self-checking bench samples on negedge for that reason.
+
 module mealydesign(
 input in,
 input clk,
