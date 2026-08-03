@@ -1,0 +1,32 @@
+# Simulation output
+build/
+*.vvp
+*.vcd
+*.wlf
+transcript
+work/
+vsim.wlf
+
+# ModelSim / Questa project files (machine-specific absolute paths)
+*.mpf
+*.cr.mti
+*.mti
+
+# Vivado / Quartus
+*.jou
+*.log
+*.str
+.Xil/
+db/
+incremental_db/
+output_files/
+simulation/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*~
+*.swp
