@@ -91,6 +91,6 @@ log in the old README depends on them — see [the multiplier README](multiplier
 - `PIPO1.v` clears the accumulator to `32'b110010` (decimal 50), not 0.
 - `PIPO2.v` has its `ldP` load path commented out, so `P` is fixed at 10.
 
-## License
+## Licence
 
 [MIT](LICENSE) © Penchalanarasaiah Kuncham
