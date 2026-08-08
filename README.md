@@ -54,12 +54,28 @@ portable `.do` scripts.
 
 ## Results
 
+`make` runs four testbenches and prints a per-cycle table for each. The
+result lines, in order:
+
 ```
-$ make
-=== multiplier ===        final result Z = 110 (expected 110)   PASS
-=== sequence-detector ===  detections = 2 (expected 2)          PASS
-=== dual-port ram ===      all checks passed                    PASS
+=== multiplier ===
+final result Z = 110 (expected 110)
+PASS
+=== sequence-detector ===
+detections = 2 (expected 2)
+PASS
+=== ram (single-port, original) ===
+read  addr=1 -> data_out=0001 (expected 0001)
+read  addr=2 -> data_out=0010 (expected 0010)
+=== ram (true dual-port) ===
+ok    A reads addr 20 = 0101
+ok    B reads addr 10 = 1010
+PASS - all checks passed
 ```
+
+The single-port section prints no PASS line: that testbench checks its
+read-backs against expected values and prints both, but has no summary
+assertion. The dual-port one, which was written for this repository, does.
 
 ## How it works
 
